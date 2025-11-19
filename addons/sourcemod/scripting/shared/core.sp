@@ -93,6 +93,14 @@ public void OnPluginStart()
 		}
 	}
 	RegAdminCmd("sm_give_gun", Command_ForceGiveGunName, ADMFLAG_ROOT, "Give a gun to a person");
+	
+	int entity = -1;
+	while ((entity = FindEntityByClassname(entity, "*")) != -1)
+	{
+		char classname[64];
+		if (GetEntityClassname(entity, classname, sizeof(classname)))
+			OnEntityCreated(entity, classname);
+	}
 }
 
 public void OnMapStart()
