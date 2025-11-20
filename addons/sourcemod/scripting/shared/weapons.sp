@@ -582,11 +582,6 @@ void Weapons_ResetRound()
 	for(int i; i<length; i++)
 	{
 		WeaponList.GetArray(i, info);
-		if(info.WeaponScore > 1.0)
-		{
-			PrintToChatAll("test");
-			continue;
-		}
 		//Pick up All weapons
 		WeaponsPicking[WeaponsPick++] = i;
 	}
@@ -604,6 +599,11 @@ void Weapons_ResetRound()
 	{
 		Weplist.InternalWeaponID = WeaponsPicking[i];
 		WeaponList.GetArray(WeaponsPicking[i], info);
+		if(info.WeaponScore > 1.0)
+		{
+			MaxWeapons++;
+			continue;
+		}
 		Weplist.ScoreSave = (info.WeaponScore + GetRandomFloat(-0.05, 0.05));
 		
 		WeaponListRound.PushArray(Weplist);
@@ -652,10 +652,10 @@ void GiveClientWeapon(int client, int Upgrade = 0)
 	if(GiveWeapon + 1 >= Cvar_GGR_WeaponsTillWin.IntValue)
 	{
 		SetEntProp(client, Prop_Send, "m_bGlowEnabled", true);
+		TF2_AddCondition(client, TFCond_MarkedForDeath, 9999.9);
 		if(Upgrade >= 1)
 		{
 			EmitSoundToAll(SOUND_FINALLEVEL, _, SNDCHAN_STATIC, SNDLEVEL_NONE);
-			TF2_AddCondition(client, TFCond_MarkedForDeath, 9999.9);
 			CPrintToChatAll("%s %N is about to win!",GGR_PREFIX, client);
 		}
 	}
