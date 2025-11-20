@@ -14,8 +14,8 @@
 #include <morecolors>
 #include <tf2utils>
 #include <cbasenpc>
-#include <collisionhook>
-#include <sourcescramble>
+//#include <collisionhook>
+//#include <sourcescramble>
 //#include <handledebugger>
 #undef REQUIRE_EXTENSIONS
 #undef REQUIRE_PLUGIN
