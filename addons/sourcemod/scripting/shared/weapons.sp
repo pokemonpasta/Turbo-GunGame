@@ -319,8 +319,6 @@ int Weapons_GiveItem(int client, int index, bool &use=false, bool &found=false)
 				EntityFuncAttack3[entity] = info.FuncAttack3;
 				EntityFuncReload4[entity]  = info.FuncReload4;
 				EntityFuncReloadCreate [entity]  = info.FuncWeaponCreated;
-				
-
 
 
 				if (info.Reload_ModeForce == 1)
@@ -362,7 +360,14 @@ int Weapons_GiveItem(int client, int index, bool &use=false, bool &found=false)
 		{
 			SetEntPropFloat(entity, Prop_Send, "m_flNextSecondaryAttack", FAR_FUTURE);
 		}
-
+		Function func = EntityFuncReloadCreate[entity];
+		if(func && func!=INVALID_FUNCTION)
+		{
+			int slot = 1;
+			Call_StartFunction(null, func);
+			Call_PushCell(client);
+			Call_PushCell(entity);
+		}
 	}
 
 	ViewChange_PlayerModel(client);
