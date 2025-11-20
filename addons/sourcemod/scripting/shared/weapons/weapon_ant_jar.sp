@@ -3,6 +3,7 @@
 
 public void AntJar_Jarate(int client, int weapon, int victim)
 {
+	PrintToChatAll("terst2");
 	TF2_MakeBleed(victim, client, 10.0);
 	RequestFrame(RemoveJarate, GetClientUserId(victim));
 }
