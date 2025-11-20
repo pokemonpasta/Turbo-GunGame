@@ -118,9 +118,11 @@ public void OnMapStart()
 	PrecacheSound("zombiesurvival/headshot2.wav");
 	PrecacheSound("quake/standard/headshot.mp3");
 	PrecacheSound(SOUND_LEVELUP);
-	AddFileToDownloadsTable("zombiesurvival/headshot1.wav");
-	AddFileToDownloadsTable("zombiesurvival/headshot2.wav");
-	AddFileToDownloadsTable("quake/standard/headshot.mp3");
+	
+	AddFileToDownloadsTable("sound/zombiesurvival/headshot1.wav");
+	AddFileToDownloadsTable("sound/zombiesurvival/headshot2.wav");
+	AddFileToDownloadsTable("sound/quake/standard/headshot.mp3");
+	AddFileToDownloadsTable("sound/gungame_riot/levelup.mp3");
 	AddFileToDownloadsTable("models/zombie_riot/weapons/custom_weaponry_1_52.dx80.vtx");
 	AddFileToDownloadsTable("models/zombie_riot/weapons/custom_weaponry_1_52.dx90.vtx");
 	AddFileToDownloadsTable("models/zombie_riot/weapons/custom_weaponry_1_52.mdl");
