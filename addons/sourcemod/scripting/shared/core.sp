@@ -81,7 +81,7 @@
 public Plugin myinfo =
 {
 	name		=	"Gun Game Riot",
-	author		=	"Artvin",
+	author		=	"Artvin, wo",
 	description	=	"Gun Game But taken to the extreme",
 	version		=	"manual"
 };
