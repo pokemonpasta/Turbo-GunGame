@@ -41,6 +41,11 @@ public void OnPostThink(int client)
 	if(delay_hud[client] < GameTime)	
 	{
 		delay_hud[client] = GameTime + 0.4;
+		
+		// Don't show HUD text if the round is won, we're switching maps, etc
+		if (GameRules_GetRoundState() >= RoundState_TeamWin)
+			return;
+		
 		char buffer[255];
 		float HudY = 0.8;
 		float HudX = -1.0;
@@ -51,16 +56,22 @@ public void OnPostThink(int client)
 		if(ClientAtWhatScore[client] + 1 >= Cvar_GGR_WeaponsTillWin.IntValue)
 			ShowNextWeapon = false;
 
-		if (ClientAssistsThisLevel[client] > 0)
+		if (!CanClientGetAssistCredit(client))
 		{
-			StrCat(buffer, sizeof(buffer), "\nYou'll rank up on the next assist!\nNEXT:");
+			StrCat(buffer, sizeof(buffer), "\nYou're on the final rank and cannot rank up through assists!");
+		}
+		else if (ClientAssistsThisLevel[client] > 0)
+		{
+			StrCat(buffer, sizeof(buffer), "\nYou'll rank up on the next assist!");
 		}
 		else
 		{
-			StrCat(buffer, sizeof(buffer), "\n\nNEXT:");
+			StrCat(buffer, sizeof(buffer), "\n");
 		}
-		if(ShowNextWeapon)
+		
+		if(ShowNextWeapon && WeaponListRound)
 		{
+			StrCat(buffer, sizeof(buffer), "\nNEXT:");
 			WeaponInfo Weplist;
 			WeaponListRound.GetArray(ClientAtWhatScore[client] + 1, Weplist);
 			ItemInfo info;
