@@ -8,6 +8,9 @@ public void BonkBat_MapStart()
     PrecacheSound(BonkBat_Sound);
 }
 
+// todo might need to add an oncreate, and add some extra netprop and vm stuff?? check bonk.nut
+
+
 public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 {
     if(victim != -1 && attacker != -1 && (damagetype & DMG_CLUB))
