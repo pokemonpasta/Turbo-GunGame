@@ -392,7 +392,6 @@ void ViewChange_Switch(int client, int active, const char[] classname)
 				ActivateEntity(entity);
 
 				i_Worldmodel_WeaponModel[client] = EntIndexToEntRef(entity);
-			//	SetEntPropFloat(entity, Prop_Send, "m_flPoseParameter", GetEntPropFloat(active, Prop_Send, "m_flPoseParameter"));
 				
 				SDKCall_EquipWearable(client, entity);
 				DataPack pack = new DataPack();
