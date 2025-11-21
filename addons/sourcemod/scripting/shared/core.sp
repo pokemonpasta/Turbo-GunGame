@@ -74,6 +74,7 @@
 #include "weapons/weapon_builder.sp"
 #include "weapons/weapon_wand_gravaton.sp"
 #include "weapons/weapon_vehicular_manslaughter.sp"
+#include "weapons/weapon_bonk_bat.sp"
 
 public Plugin myinfo =
 {
