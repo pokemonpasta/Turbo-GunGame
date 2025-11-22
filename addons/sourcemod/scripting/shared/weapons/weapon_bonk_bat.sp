@@ -18,16 +18,6 @@ public void BonkBat_MapStart()
    
 }
 
-// public void BonkBat_OnCreate(int client, int weapon)
-// {
-//     for (int i = 0; i < 4; i++)
-//     {
-// 		SetEntProp(weapon, Prop_Send, "m_nModelIndexOverrides", BonkBat_ModelIndex, 4, i);
-//     }
-//     SetEntProp(weapon, Prop_Send, "m_bBeingRepurposedForTaunt", 1, 1);
-//     SetEntProp(weapon, Prop_Send, "m_nRenderMode", 1); // kRenderTransColor
-// }
-
 public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 {
     if(victim != -1 && attacker != -1 && (damagetype & DMG_CLUB) && damage > 0.0)
@@ -39,15 +29,24 @@ public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, fl
         SetEntPropEnt(victim, Prop_Send, "m_hGroundEntity", -1);
         SetEntProp(victim, Prop_Data, "m_fFlags", (GetEntProp(victim, Prop_Data, "m_fFlags") & ~FL_ONGROUND));
         
-        damageForce[2] = BonkBat_Max(damageForce[2], 1.0);
-        damageForce[2] *= 10000.0;
-        
-        Attributes_Set(victim, Attrib_MultiplyFallDamage, 200.0);
+        CreateTimer(0.01, BonkBat_PostTakeDamage, victim, _); // this kinda sucks ngl
         
         return Plugin_Changed;
     }
     
     return Plugin_Continue;
+}
+
+public void BonkBat_PostTakeDamage(int victim)
+{
+    float vel[3];
+    GetEntPropVector(victim, Prop_Data, "m_vecAbsVelocity", vel);
+    
+    vel[2] = BonkBat_Max(vel[2], 1.0);
+    
+    Custom_SetAbsVelocity(victim, vel);
+    
+    Attributes_Set(victim, Attrib_MultiplyFallDamage, 200.0);
 }
 
 public float BonkBat_Max(float f1, float f2)
