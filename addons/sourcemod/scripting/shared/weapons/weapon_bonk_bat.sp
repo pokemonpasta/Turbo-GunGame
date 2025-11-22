@@ -40,9 +40,9 @@ public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, fl
         SetEntProp(victim, Prop_Data, "m_fFlags", (GetEntProp(victim, Prop_Data, "m_fFlags") & ~FL_ONGROUND));
         
         damageForce[2] = BonkBat_Max(damageForce[2], 1.0);
-        damageForce[2] *= 450.0;
+        damageForce[2] *= 1000.0;
         
-        Attributes_Set(victim, Attrib_MultiplyFallDamage, 100.0);
+        Attributes_Set(victim, Attrib_MultiplyFallDamage, 200.0);
         
         return Plugin_Changed;
     }
