@@ -2,14 +2,19 @@
 #pragma newdecls required
 
 static char BonkBat_Sound[64] = "tf2ware_ultimate/bonk_bat_hit.wav";
+static int BonkBat_ModelIndex;
 
 public void BonkBat_MapStart()
 {
     PrecacheSound(BonkBat_Sound);
+    BonkBat_ModelIndex = PrecacheModel("models/weapons/c_models/tf2ware/c_bonk_bat.mdl");
 }
 
 // todo might need to add an oncreate, and add some extra netprop and vm stuff?? check tf2ware bonk.nut
-
+// public void BonkBat_OnCreate(int client, int weapon)
+// {
+    
+// }
 
 public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom)
 {
@@ -19,25 +24,27 @@ public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, fl
         
         // unground
         // SetPropEntity(victim, "m_hGroundEntity", null)
-        SetEntPropEnt(victim, Prop_Send, "m_hGroundEntity", null);
+        SetEntPropEnt(victim, Prop_Send, "m_hGroundEntity", -1);
         // victim.RemoveFlag(FL_ONGROUND)
         SetEntProp(victim, Prop_Data, "m_fFlags", (GetEntProp(victim, Prop_Data, "m_fFlags") & ~FL_ONGROUND));
         
         // local scale = 450.0
-        float scale = 450.0
+        float scale = 450.0;
         // local dir = attacker.EyeAngles().Forward()
         float eyeangles[3], dir[3], vel[3], origin[3];
         GetClientEyeAngles(attacker, eyeangles);
-        GetAngleVetors(eyeangles, dir, NULL_VECTOR, NULL_VECTOR);
+        GetAngleVectors(eyeangles, dir, NULL_VECTOR, NULL_VECTOR);
         // local vel = victim.GetAbsVelocity()
         GetEntPropVector(victim, Prop_Data, "m_vecVelocity", vel); 
         // dir.z = Max(dir.z, 0.0)
         dir[2] = BonkBat_Max(dir[2], 0.0);
         // vel += dir * scale
         ScaleVector(dir, scale);
-        AddVector(vel, dir);
+        
+        float final_vel[3];
+        AddVectors(vel, dir, final_vel);
         // vel.z += scale
-        vel[2] += scale;
+        final_vel[2] += scale;
         // victim.SetAbsVelocity(vel)
         TeleportEntity(victim, NULL_VECTOR, NULL_VECTOR, vel);				
         // victim.EmitSound(bat_hit_sound)
