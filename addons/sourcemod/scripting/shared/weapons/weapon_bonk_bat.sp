@@ -18,7 +18,6 @@ public void BonkBat_MapStart()
    
 }
 
-// todo might need to add an oncreate, and add some extra netprop and vm stuff?? check tf2ware bonk.nut
 public void BonkBat_OnCreate(int client, int weapon)
 {
     for (int i = 0; i < 4; i++)
