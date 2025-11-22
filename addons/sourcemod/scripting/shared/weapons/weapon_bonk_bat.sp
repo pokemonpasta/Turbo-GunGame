@@ -61,7 +61,7 @@ public Action BonkBat_OnTakeDamage(int victim, int &attacker, int &inflictor, fl
         Custom_SetAbsVelocity(victim, vel);				
         // victim.EmitSound(bat_hit_sound)
         GetClientAbsOrigin(victim, origin);
-        EmitSoundToAll(BonkBat_Sound, victim, SNDCHAN_WEAPON, 70, _, 0.35);
+        EmitSoundToAll(BonkBat_Sound, victim, SNDCHAN_ITEM, 70, _, 1.0);
         
         return Plugin_Changed;
     }
