@@ -3,7 +3,7 @@
 
 public void Spell_Setup(int client)
 {
-	SpawnWeapon(client, "tf_weapon_spellbook", 1069, 0, 0, {0}, NULL_VECTOR, 0);
+	SpawnWeapon(client, "tf_weapon_spellbook", 1069, 0, 0, view_as<int>({138}), view_as<float>({999.0}), 0);
 	int iSpellbook = GetSpellbook(client);
 	if (iSpellbook == -1)
 		return;

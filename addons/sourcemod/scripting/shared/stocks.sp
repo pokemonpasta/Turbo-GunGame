@@ -1012,7 +1012,7 @@ stock bool IsValidEnemy(int index, int enemy)
 		{
 			return false;
 		}
-		if(b_ThisEntityIsAProjectileForUpdateContraints[enemy])
+		if(b_IsAProjectile[enemy])
 		{
 			return false;
 		}
@@ -1033,7 +1033,7 @@ stock bool IsEntityAlive(int index, bool WasValidAlready = false)
 	{
 		if(index > MaxClients)
 		{
-			return true;
+			return false;
 		}
 		else
 		{
@@ -1149,7 +1149,7 @@ public bool BulletAndMeleeTrace(int entity, int contentsMask, any iExclude)
 	if(entity == iExclude)
 		return false;
 
-	if(b_ThisEntityIsAProjectileForUpdateContraints[entity])
+	if(b_IsAProjectile[entity])
 	{
 		return false;
 	}
@@ -1440,4 +1440,43 @@ stock void SpawnBeam_Vectors(float StartLoc[3], float EndLoc[3], float beamTimin
 	{
 		TE_SendToClient(target);
 	}
+}
+
+
+stock int GiveWearable(int client, int index, bool ShieldDo = false)
+{
+	int entity;
+	if(ShieldDo)
+		entity = CreateEntityByName("tf_wearable_demoshield");
+	else
+		entity = CreateEntityByName("tf_wearable");
+	if(entity > MaxClients)	// Weapon viewmodel
+	{
+		if(index != 0)
+		{
+			SetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex", index);
+			SetEntProp(entity, Prop_Send, "m_bInitialized", true);
+		}
+		SetEntProp(entity, Prop_Send, "m_iEntityQuality", 1);
+		SetEntProp(entity, Prop_Send, "m_iEntityLevel", 1);
+		SetEntProp(entity, Prop_Send, "m_bValidatedAttachedEntity", true);
+		SetEntProp(entity, Prop_Send, "m_iAccountID", GetSteamAccountID(client, false));
+		
+		DispatchSpawn(entity);
+		SDKCall_EquipWearable(client, entity);
+		
+		return entity;
+	}
+	return -1;
+}
+stock void RunScriptCode(int entity, int activator, int caller, const char[] format, any...)
+{
+    if (!IsValidEntity(entity))
+        return;
+    
+    static char buffer[1024];
+    VFormat(buffer, sizeof(buffer), format, 5);
+    
+    SetVariantString(buffer);
+    AcceptEntityInput(entity, "RunScriptCode", activator, caller);
 }

@@ -146,7 +146,32 @@ stock Handle CheckedDHookCreateFromConf(Handle game_config, const char[] name) {
     return res;
 }
 
+public Action CH_ShouldCollide(int ent1, int ent2, bool &result)
+{
+	if(!(ent1 >= 0 && ent1 <= MAXENTITIES && ent2 >= 0 && ent2 <= MAXENTITIES))
+		return Plugin_Continue;
 
+	result = PassfilterGlobal(ent1, ent2, true);
+	if(!result)
+	{
+		return Plugin_Handled;
+	}
+	return Plugin_Continue;
+
+}
+public Action CH_PassFilter(int ent1, int ent2, bool &result)
+{
+	if(!(ent1 >= 0 && ent1 <= MAXENTITIES && ent2 >= 0 && ent2 <= MAXENTITIES))
+		return Plugin_Continue;
+
+	result = PassfilterGlobal(ent1, ent2, true);
+	if(!result)
+	{
+		return Plugin_Handled;
+	}
+	return Plugin_Continue;
+
+}
 stock void DHook_HookStripWeapon(int entity)
 {
 	if(m_Item > 0 && m_bOnlyIterateItemViewAttributes > 0)
@@ -212,4 +237,42 @@ public MRESReturn SpeakConceptIfAllowed_Post(int client, Handle hReturn, Handle 
 		}
 	}
 	return MRES_Ignored;
+}
+
+
+
+public bool PassfilterGlobal(int ent1, int ent2, bool result)
+{
+	for( int ent = 1; ent <= 2; ent++ ) 
+	{
+		static int entity1;
+		static int entity2; 	
+		if(ent == 1)
+		{
+			entity1 = ent1;
+			entity2 = ent2;
+		}
+		else
+		{
+			entity1 = ent2;
+			entity2 = ent1;			
+		}
+		if(b_IsAProjectile[entity1])
+		{
+			if(b_IsAProjectile[entity2])
+			{
+				return false;
+			}
+			if(!ValidTargetToHit[entity2])
+			{
+				if(entity2 > MaxClients)
+					return false;
+			}
+			if(entity2 == GetEntPropEnt(entity1, Prop_Send, "m_hOwnerEntity"))
+			{
+				return false;
+			}
+		}
+	}
+	return result;	
 }

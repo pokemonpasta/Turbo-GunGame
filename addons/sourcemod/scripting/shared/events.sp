@@ -15,9 +15,13 @@ public Action OnPlayerDeath(Event event, const char[] name, bool dontBroadcast)
 	int victim = GetClientOfUserId(event.GetInt("userid"));
 	if(!victim)
 		return Plugin_Continue;
+	CreateTimer(1.0, Timer_Respawn, GetClientUserId(victim));
+	if(f_PreventKillCredit[victim] > GetGameTime())
+	{
+		return Plugin_Stop;
+	}
 	TF2_SetPlayerClass_ZR(victim, CurrentClass[victim], false, false);
 	//am ded
-	CreateTimer(1.0, Timer_Respawn, GetClientUserId(victim));
 	int attacker = GetClientOfUserId(event.GetInt("attacker"));
 	int assister = GetClientOfUserId(event.GetInt("assister"));
 
@@ -55,8 +59,8 @@ public Action OnPlayerDeath(Event event, const char[] name, bool dontBroadcast)
 	}
 	else
 	{
-		CPrintToChat(attacker,"%s You just deranked %N!!!!", GGR_PREFIX, victim);
-		CPrintToChat(victim,"%s %N just deranked you!!!!", GGR_PREFIX, attacker);
+		CPrintToChat(attacker,"%s You just deranked %N!!!!", TGG_PREFIX, victim);
+		CPrintToChat(victim,"%s %N just deranked you!!!!", TGG_PREFIX, attacker);
 		EmitSoundToClient(victim, "mvm/mvm_money_vanish.wav", _, _, 90, _, 1.0, 100);
 		EmitSoundToClient(attacker, "mvm/mvm_money_vanish.wav", _, _, 90, _, 1.0, 100);
 		ClientAtWhatScore[victim]--;
@@ -100,7 +104,7 @@ stock void DelayFrame_RankPlayerUp(int userid)
 		ClientAtWhatScore[client] = Cvar_GGR_WeaponsTillWin.IntValue;
 		
 		// Make this prettier later i dunno
-		CPrintToChatAll("%s %N wins the game!", GGR_PREFIX, client);
+		CPrintToChatAll("%s %N wins the game!", TGG_PREFIX, client);
 		
 		ForceTeamWin(TF2_GetClientTeam(client));
 	}

@@ -14,7 +14,7 @@ static const float SCP18GravityFactor = 0.5;
 static const float SCP18GravityAccelTime = 3.0;
 static const float SCP18MaxVelocity = 10000.0;
 static const float SCP18MaxDamage = 1200.0;
-static const float SCP18Lifetime = 7.0;
+static const float SCP18Lifetime = 5.0;
 
 enum struct SCP18Enum
 {
@@ -302,7 +302,7 @@ public void SCP18_Button(int client, int weapon, bool crit)
 		GetClientEyeAngles(client, ang);
 		pos[2] += 63.0;
 
-		Items_GrenadeTrajectory(ang, vel, 550.0);
+		Items_GrenadeTrajectory(ang, vel, 950.0);
 
 		SetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity", client);
 		SetEntProp(entity, Prop_Send, "m_iTeamNum", GetClientTeam(client));

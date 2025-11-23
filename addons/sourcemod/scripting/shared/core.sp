@@ -14,7 +14,7 @@
 #include <morecolors>
 #include <tf2utils>
 #include <cbasenpc>
-//#include <collisionhook>
+#include <collisionhook>
 //#include <sourcescramble>
 //#include <handledebugger>
 #undef REQUIRE_EXTENSIONS
@@ -47,7 +47,7 @@
 #define HIDEHUD_METAL		( 1<<15 )	
 #define HIDEHUD_TARGET_ID		( 1<<16 )	
 
-#define SOUND_LEVELUP "gungame_riot/levelup.mp3"
+#define SOUND_LEVELUP "turbo_gungame/levelup.mp3"
 #define SOUND_FINALLEVEL "ui/duel_challenge_accepted_with_restriction.wav"
 
 
@@ -128,6 +128,7 @@ public void OnMapStart()
 	SDKHook_MapStart();
 	ViewChange_MapStart();
 	Zero(f_PreventMovementClient);
+	Zero(f_PreventKillCredit);
 	f_RoundStartUberLastsUntil = 0.0;
 	//precache or fastdl
 	g_particleCritText = PrecacheParticleSystem("crit_text");
@@ -145,7 +146,7 @@ public void OnMapStart()
 	AddFileToDownloadsTable("sound/zombiesurvival/headshot1.wav");
 	AddFileToDownloadsTable("sound/zombiesurvival/headshot2.wav");
 	AddFileToDownloadsTable("sound/quake/standard/headshot.mp3");
-	AddFileToDownloadsTable("sound/gungame_riot/levelup.mp3");
+	AddFileToDownloadsTable("sound/turbo_gungame/levelup.mp3");
 	
 	AddFileToDownloadsTable("models/zombie_riot/weapons/custom_weaponry_1_52.dx80.vtx");
 	AddFileToDownloadsTable("models/zombie_riot/weapons/custom_weaponry_1_52.dx90.vtx");
@@ -232,13 +233,12 @@ public void OnEntityCreated(int entity, const char[] classname)
 		return;
 	if (!IsValidEntity(entity))
 		return;
-
+	b_IsAProjectile[entity] = false;
 	ValidTargetToHit[entity] = false;
 	i_SavedActualWeaponSlot[entity] = -1;
 	b_IsATrigger[entity] = false;
 	b_IsATriggerHurt[entity] = false;
 	b_IsAMedigun[entity] = false;
-	b_ThisEntityIsAProjectileForUpdateContraints[entity] = false;
 	if(!StrContains(classname, "trigger_teleport")) //npcs think they cant go past this sometimes, lol
 	{
 		b_IsATrigger[entity] = true;
@@ -253,9 +253,17 @@ public void OnEntityCreated(int entity, const char[] classname)
 	}
 	else if(!StrContains(classname, "tf_projecti"))
 	{
-		//This can only be on red anyways.
-		b_ThisEntityIsAProjectileForUpdateContraints[entity] = true;
+		b_IsAProjectile[entity] = true;
 	}
+	/*
+	else if(!StrContains(classname, "func_wall")
+	|| !StrContains(classname, "func_ladder"))
+	{
+		//crashes with custom projectiles
+		SDKHook(entity, SDKHook_SpawnPost, Delete_instantly);
+	//	b_IsAProjectile[entity] = true;
+	}
+	*/
 	else if(!StrContains(classname, "trigger_hurt")) //npcs think they cant go past this sometimes, lol
 	{
 		b_IsATrigger[entity] = true;

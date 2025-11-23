@@ -55,11 +55,12 @@ static Action Timer_Local(Handle timer, DataPack pack)
 			SetParent(viewmodelModel, Particle, "effect_hand_r");
 		}
 		//1.5 seconds very accurate
+		TF2_AddCondition(client, TFCond_MegaHeal, 1.2);
 		EmitGameSoundToAll ("Soldier.CritDeath", client);
 		DataPack pack1 = new DataPack();
 		pack1.WriteCell(EntIndexToEntRef(client));
 		pack1.WriteCell(EntIndexToEntRef(weapon));
-		RequestFrames(Kamikaze_ExplodeMeNow, RoundToNearest(66.0 * 1.0), pack1);
+		RequestFrames(Kamikaze_ExplodeMeNow, RoundToNearest(45.0 * 1.0), pack1);
 		return Plugin_Stop;
 	}
 	return Plugin_Continue;
@@ -77,11 +78,13 @@ void Kamikaze_ExplodeMeNow(DataPack pack)
 	}
 	if (!TF2_IsPlayerInCondition(client, TFCond_Taunting))
 	{
+		KamikazeCreate(client, weapon);
 		return;
 	}
 	
 	static float startPosition[3];
 	WorldSpaceCenter(client, startPosition);
+	f_PreventKillCredit[client] = GetGameTime() + 0.1;
 	TF2_Explode(client, startPosition, 1000.0, 130.0, "hightower_explosion", "common/null.wav");
 	EmitSoundToAll("mvm/mvm_tank_explode.wav", client, SNDCHAN_STATIC, 90, _, 0.8);
 }

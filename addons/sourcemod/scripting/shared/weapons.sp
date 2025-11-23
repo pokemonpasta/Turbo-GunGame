@@ -540,7 +540,6 @@ void Weapons_ApplyAttribs(int client)
 	int attribs = 0;
 	for(int i; i < length; i++)
 	{
-
 		snapshot.GetKey(i, buffer1, sizeof(buffer1));
 		if(map.GetValue(buffer1, value))
 		{
@@ -548,7 +547,6 @@ void Weapons_ApplyAttribs(int client)
 
 			if(Attributes_Set(client, index, value))
 				attribs++;
-
 		}
 	}
 	
@@ -660,7 +658,7 @@ void GiveClientWeapon(int client, int Upgrade = 0)
 		if(Upgrade >= 1)
 		{
 			EmitSoundToAll(SOUND_FINALLEVEL, _, SNDCHAN_STATIC, SNDLEVEL_NONE);
-			CPrintToChatAll("%s %N is about to win!",GGR_PREFIX, client);
+			CPrintToChatAll("%s %N is about to win!",TGG_PREFIX, client);
 		}
 	}
 

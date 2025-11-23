@@ -128,3 +128,23 @@ public Action Reverse_RocketLauncher_OnTakeDamage(int victim, int &attacker, int
 		damage = 69420.0;
 	return Plugin_Continue;
 }
+
+
+public void SeabornSoldier(int client, int weapon, bool crit)
+{
+	RequestFrames(SeabornSoldier_Color,10, GetClientUserId(client));
+}
+stock void SeabornSoldier_Color(int userid)
+{
+	int client = GetClientOfUserId(userid);
+	if(!IsValidEntity(client))
+		return;
+	int viewmodelModel;
+	viewmodelModel = EntRefToEntIndex(i_Viewmodel_PlayerModel[client]);
+
+	if(!IsValidEntity(viewmodelModel))
+		return;
+	SetEntityRenderColor(viewmodelModel, 100, 100, 255, 255);
+
+}
+	

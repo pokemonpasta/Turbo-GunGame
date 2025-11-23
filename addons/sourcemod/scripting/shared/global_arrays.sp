@@ -30,6 +30,7 @@ int m_Item;
 int iref_PropAppliedToRocket[MAXENTITIES];
 float f_RoundStartUberLastsUntil;
 bool b_DisableCollisionOnRoundStart;
+bool b_IsAProjectile[MAXENTITIES];
 
 ConVar tf_scout_air_dash_count;
 
@@ -38,6 +39,7 @@ int i_WeaponVMTExtraSetting[MAXENTITIES];
 bool b_IsATrigger[MAXENTITIES];
 bool b_IsATriggerHurt[MAXENTITIES];
 int i_CustomWeaponEquipLogic[MAXENTITIES]={0, ...};
+float f_PreventKillCredit[MAXENTITIES]={0.0, ...};
 int i_SavedActualWeaponSlot[MAXENTITIES]={-1, ...};
 int i_WeaponModelIndexOverride[MAXENTITIES];
 int i_WeaponBodygroup[MAXENTITIES];
@@ -55,7 +57,6 @@ int WeaponRef_viewmodel[MAXPLAYERS] = {-1, ...};
 int HandRef[MAXPLAYERS] = {-1, ...};
 bool b_IsAMedigun[MAXENTITIES];
 float f_PreventMovementClient[MAXENTITIES];
-bool b_ThisEntityIsAProjectileForUpdateContraints[MAXENTITIES];
 float f_WandDamage[MAXENTITIES]; //
 int i_WandWeapon[MAXENTITIES]; //
 int i_WandParticle[MAXENTITIES]; //Only one allowed, dont use more. ever. ever ever. lag max otherwise.
